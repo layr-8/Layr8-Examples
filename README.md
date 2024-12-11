@@ -19,4 +19,4 @@ This guide demonstrates how to build a plugin that communicates with Layr8 Nodes
 - Etickets/Bill of Ladings
 
 ### Coming soon
--IoT sensors
+- IoT sensors
