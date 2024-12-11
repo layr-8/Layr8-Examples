@@ -1,0 +1,132 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Layr8 Chat</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      #messages {
+        height: 400px;
+        border: 1px solid #ccc;
+        margin-bottom: 20px;
+        padding: 10px;
+        overflow-y: auto;
+      }
+      .message {
+        margin-bottom: 10px;
+        padding: 8px;
+        border-radius: 4px;
+      }
+      .message.sent {
+        background-color: #e3f2fd;
+        margin-left: 20%;
+      }
+      .message.received {
+        background-color: #f5f5f5;
+        margin-right: 20%;
+      }
+      .sender {
+        font-size: 0.8em;
+        color: #666;
+        margin-bottom: 4px;
+      }
+      #input-area {
+        display: flex;
+        gap: 10px;
+      }
+      #message-input {
+        flex-grow: 1;
+        padding: 8px;
+      }
+      button {
+        padding: 8px 16px;
+        background-color: #2196f3;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #1976d2;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="messages"></div>
+    <div id="input-area">
+      <input
+        type="text"
+        id="message-input"
+        placeholder="Type your message..."
+      />
+      <button onclick="sendMessage()">Send</button>
+    </div>
+
+    <script>
+      const ws = new WebSocket('ws://localhost:3000');
+      const messagesDiv = document.getElementById('messages');
+      const messageInput = document.getElementById('message-input');
+
+      ws.onopen = () => {
+        console.log('Connected to server');
+      };
+
+      ws.onmessage = (event) => {
+        const message = JSON.parse(event.data);
+        if (message.type === 'message') {
+          addMessage(message.sender, message.content);
+        }
+      };
+
+      ws.onclose = () => {
+        console.log('Disconnected from server');
+      };
+
+      function addMessage(sender, content) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${
+          sender === 'your-did' ? 'sent' : 'received'
+        }`;
+
+        const senderDiv = document.createElement('div');
+        senderDiv.className = 'sender';
+        senderDiv.textContent = sender;
+
+        const contentDiv = document.createElement('div');
+        contentDiv.textContent = content;
+
+        messageDiv.appendChild(senderDiv);
+        messageDiv.appendChild(contentDiv);
+        messagesDiv.appendChild(messageDiv);
+
+        // Scroll to bottom
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+      }
+
+      function sendMessage() {
+        const content = messageInput.value.trim();
+        if (content) {
+          ws.send(
+            JSON.stringify({
+              type: 'chat',
+              content: content,
+            })
+          );
+          messageInput.value = '';
+        }
+      }
+
+      // Allow sending message with Enter key
+      messageInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          sendMessage();
+        }
+      });
+    </script>
+  </body>
+</html>
