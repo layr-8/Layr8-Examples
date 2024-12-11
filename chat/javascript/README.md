@@ -5,7 +5,10 @@ There are two Node.js command-line clients for DIDComm messaging using WebSocket
 One is command line and the other is a simple webpage. 
 
 You can quickly get started with the webpage by using Stackblitz
+
 [https://stackblitz.com/github/layr-8/Layr8-Examples/tree/main/chat/javascript/webpage]
+
+Enter your credentials and run "node index.js"
 
 ## Features
 
