@@ -15,8 +15,8 @@ This guide demonstrates how to build a plugin that communicates with Layr8 Nodes
    
 
 ## Examples
---Chat with others and AI personas
---Etickets/Bill of Ladings
+- Chat with others and AI personas
+- Etickets/Bill of Ladings
 
 ### Coming soon
 -IoT sensors
