@@ -87,7 +87,7 @@ namespace Layr8Chat
                 {
                     try
                     {
-                        channel = socket.Channel("plugins:did:web:earth.node.layr8.org:truckit-airticket-1", new Dictionary<string, object>
+                        channel = socket.Channel($"plugins:{did}", new Dictionary<string, object>
                         {
                             { "payload_types", new[]
                                 {
@@ -148,7 +148,7 @@ namespace Layr8Chat
                                         {
                                             ["id"]= Guid.NewGuid().ToString(),
                                             ["from"]= did,
-                                            ["to"] = new[] { "did:web:venus.node.layr8.org:demo-contractor-1" },
+                                            ["to"] = new[] { recipient_did },
                                             ["type"] = "https://didcomm.org/basicmessage/2.0/message",
                                             ["body"] = new Dictionary<string, object>
                                             {
@@ -159,8 +159,6 @@ namespace Layr8Chat
 
                                         var push = new Push(channel, "message", messagePayload, 10000);
                                         push.Send().Wait();
-                                        //Console.WriteLine("Message sent!");
-                                        Console.Write("\nEnter message > ");
                                     }
                                 }
                             }
